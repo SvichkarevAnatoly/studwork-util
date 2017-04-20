@@ -1,3 +1,25 @@
+import os.path
+import datetime
+
+
+class Logger(object):
+    def __init__(self):
+        self.folder = "log/"
+        time = str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))
+        extension = ".log"
+        self.logFile = os.path.join(self.folder, time + extension)
+        self.logMsg = ""
+
+    def log(self, msg):
+        self.logMsg += str(msg) + '\n'
+
+    def save(self):
+        if not os.path.exists(self.folder):
+            os.makedirs(self.folder)
+        with open(self.logFile, "w") as textFile:
+            textFile.write(self.logMsg)
+
+
 def inputStatistics():
     ratings = list()
     prices = list()
@@ -47,10 +69,18 @@ if __name__ == "__main__":
     prices, ratings = inputStatistics()
     personRating = inputPersonRating()
 
+    # логирование
+    logger = Logger()
+    logger.log("prices: " + ', '.join(str(x) for x in prices))
+    logger.log("ratings: " + ', '.join(str(x) for x in ratings))
+    logger.log("personRating: " + str(personRating))
+
     # сбор статистики
     amountPriceRating, amountRating = accumulateStatistics(prices, ratings)
 
     # вычисление оптимальной цены
     optimalPrice = computeOptimalPrice(personRating, amountPriceRating, amountRating)
+    logger.log("optimal price: " + str(optimalPrice))
 
     print("Оптимальная цена: ", optimalPrice)
+    logger.save()
