@@ -22,15 +22,17 @@ def inputStatistics():
 
 
 def inputPersonRating():
-    return int(input("Ваш рейтинг: "))
+    # с псевдоотчётом
+    return int(input("Ваш рейтинг: ")) + 1
 
 
 def accumulateStatistics(prices, ratings):
     amountPriceRating = 0
     amountRating = 0
     for price, rating in zip(prices, ratings):
-        amountPriceRating += rating * price
-        amountRating += rating
+        # рейтинг может быть 0, поэтому псевдоотчёты
+        amountPriceRating += (rating + 1) * price
+        amountRating += (rating + 1)
     return amountPriceRating, amountRating
 
 
