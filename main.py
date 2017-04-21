@@ -1,13 +1,14 @@
-import os.path
+import sys, os
 import datetime
 
 
 class Logger(object):
     def __init__(self):
-        self.folder = "log/"
+        scriptPath = os.path.dirname(sys.argv[0])
+        self.folder = os.path.join(scriptPath, "log/")
         time = str(datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S'))
         extension = ".log"
-        self.logFile = os.path.join(self.folder, time + extension)
+        self.logFile = os.path.join(scriptPath, self.folder, time + extension)
         self.logMsg = ""
 
     def log(self, msg):
